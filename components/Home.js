@@ -1,19 +1,35 @@
-import React, {Component} from "react";
-import { View , Text} from "react-native";
+import * as React from 'react';
+import {BottomNavigation, Text} from 'react-native-paper';
 
 
-export default class HomePage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+const MusicRoute = () => <Text>Music</Text>;
 
-    render() {
-        return (
-            <View>
-               <Text> Home </Text>
-            </View>
-        );
-    }
-}
+const AlbumsRoute = () => <Text>Albums</Text>;
+
+const RecentsRoute = () => <Text>Recents</Text>;
+
+const Home = () => {
+    const [index, setIndex] = React.useState(0);
+    const [routes] = React.useState([
+        {key: 'music', title: 'Music'},
+        {key: 'albums', title: 'Albums'},
+        {key: 'recents', title: 'Recents'},
+    ]);
+
+    const renderScene = BottomNavigation.SceneMap({
+        music: MusicRoute,
+        albums: AlbumsRoute,
+        recents: RecentsRoute,
+    });
+
+    return (
+        <BottomNavigation
+            navigationState={{index, routes}}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+        />
+    );
+};
+
+export default Home;
