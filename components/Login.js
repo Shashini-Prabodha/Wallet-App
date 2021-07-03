@@ -47,7 +47,7 @@ export default class Login extends Component {
                                     {/* <Text>Name:{this.state.email}</Text> */}
                                     <Button style={styles.loginbtn} mode="contained" 
                                      onPress={()=>{
-                                        // this.props.navigation.navigate('Home');
+                                        this.props.navigation.replace('Navigation');
                                     }}>
                                         Login
                                     </Button>
@@ -63,12 +63,11 @@ export default class Login extends Component {
 }
 
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "rgba(127,1,240,1)",
-        borderWidth: 1,
-        borderColor: "#000000"
     },
     card: {
         height: 430,
@@ -119,8 +118,8 @@ const styles = StyleSheet.create({
     loginbtn: {
         marginTop: 35,
         width: 120,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderRadius:25
     }
 
 });
-
