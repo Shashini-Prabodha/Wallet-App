@@ -18,7 +18,7 @@ export default class Income extends Component {
       <ScrollView style={styles.container}>
 
 
-        <Text style={{ top: 0, fontSize: 26, alignSelf: 'center', padding: 20, color: '#440A67' }}>MY Wallet - Income </Text>
+        <Text style={{ top: 0, fontSize: 26, alignSelf: 'center', padding: 20, color: '#440A67' }}>MY Wallet - Expenses </Text>
        
         <Card style={styles.card}>
           <Text style={{ top: 0, padding: 5, color: '#185ADB', fontSize: 20, }}>Expenses</Text>

@@ -42,7 +42,8 @@ export default class Home extends Component {
 
         <LottieView style={styles.icon}
           ref={animation => {
-            this.animation = animation;
+            animation.play();
+            animation.play(0, 120);
           }}
           source={require('../assets/9072-coin.json')}
         ></LottieView>
@@ -56,7 +57,8 @@ export default class Home extends Component {
 
           <LottieView style={styles.icon2}
             ref={animation => {
-              this.animation = animation;
+              animation.play();
+              animation.play(0, 120);
             }}
             source={require('../assets/mp.json')}
           ></LottieView>

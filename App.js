@@ -5,6 +5,8 @@ import Expense from './components/Expense';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import Loader from './components/Loader';
+import Card from './components/CardItem';
+
 import Navigation from './components/Navigation';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -21,6 +23,8 @@ export default class App extends Component {
                 
                 
                 <Stack.Navigator>
+
+
                     <Stack.Screen options={{headerShown: false}} name="Loader" component={Loader} />                  
 
                     <Stack.Screen options={{headerShown: false}} name="Login" component={Login} />                  
@@ -29,6 +33,7 @@ export default class App extends Component {
                     <Stack.Screen name="Income" component={Income} />
                     <Stack.Screen name="Expense" component={Expense} />
                     <Stack.Screen name="Profile" component={Profile} />
+                    <Stack.Screen name="Card" component={Card} />                  
                 
                     <Stack.Screen options={{headerShown: false}} name="Navigation" component={Navigation} />
 
