@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: 'relative',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 10,
     padding: 10,
     left: 10,
     width: 340,

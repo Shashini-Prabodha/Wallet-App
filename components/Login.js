@@ -1,61 +1,143 @@
 import { Form, Input, Item, Label, Text } from 'native-base';
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Alert } from 'react-native';
 import { Card, Title, Paragraph, TextInput, Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 export default class Login extends Component {
     state = {
         email: '',
+        password: '',
+    };
+    componentDidMount() {
+        this.getData.bind(this);
     };
 
-
-    handleText = (text) => {
+    handleEmailText = (text) => {
         this.setState({ email: text });
     };
+    handlePasswordText = (text) => {
+        this.setState({ password: text });
+    };
+
+    storeData = async (email, password) => {
+        try {
+            email: this.state.email;
+            password: this.state.password;
+            if (this.state.email && this.state.password) {
+                // if (this.getData.bind(this)) {
+                if (this.storeData.bind(this)) {
+                    await AsyncStorage.setItem("email", this.state.email);
+                    await AsyncStorage.setItem("password", this.state.password);
+                    console.log("11" + this.state.email + " " + this.state.password)
+                    console.log("press");
+                    // this.props.navigation.replace('Navigation');
+                } else {
+                    Alert.alert("Incorrect Email or password..! Please check or sign up")
+                }
+                // } else {
+                //     Alert.alert("Incorrect Email or password..! Please check or sign up")
+                // }
+                Alert.alert("Data Saved !")
+
+            } else {
+                Alert.alert("Enter Email/Password")
+            }
+
+        } catch (e) {
+            // saving error
+        }
+    }
+
+    getData = async () => {
+        try {
+            console.log("####")
+
+            const email = await AsyncStorage.getItem('email');
+            const password = await AsyncStorage.getItem('password');
+            console.log("####" + email + " " + password)
+
+            if (email !== null && password !== null) {
+                console.log("Value is" + email + " " + password)
+                if (email == this.state.email && password == this.state.password) { 
+                    this.props.navigation.replace('Navigation');
+
+                } else {
+                    Alert.alert("Incorrect Email or password..! Please check or sign up")
+                }
+                // value previously stored
+            } else {
+                console.log("Value is null");
+
+            }
+        } catch (e) {
+            // error reading value
+        }
+    }
+    removeValue = async () => {
+        try {
+            await AsyncStorage.removeItem('name')
+            console.log("Removed!")
+            Alert.alert(value + " is removed !")
+
+        } catch (e) {
+            // remove error
+        }
+    }
 
     render() {
         return (
 
             <View style={styles.container}>
-                    <KeyboardAvoidingView style={styles.container} behavior="position">
-                        <View style={styles.container1}>
+                <KeyboardAvoidingView style={styles.container} behavior="position">
+                    <View style={styles.container1}>
 
-                            <Card
-                                style={styles.card}>
-                                <Image
-                                    source={require("../assets/logo.png")}
-                                    resizeMode="contain"
-                                    style={styles.image2}>
-                                </Image>
+                        <Card
+                            style={styles.card}>
+                            <Image
+                                source={require("../assets/logo.png")}
+                                resizeMode="contain"
+                                style={styles.image2}>
+                            </Image>
 
-                                <View style={styles.container2}>
+                            <View style={styles.container2}>
 
-                                    <TextInput style={styles.input}
-                                        label="Email"
-                                        value={this.state.text}
-                                        mode="outlined"
-                                        onChangeText={(text) => this.handleText(text)}
-                                    />
-                                    <TextInput style={styles.input}
-                                        label="Password"
-                                        value={this.state.text}
-                                        mode="outlined"
-                                        onChangeText={(text) => this.handleText(text)}
-                                    />
+                                <TextInput style={styles.input}
+                                    label="Email"
+                                    value={this.state.text}
+                                    mode="outlined"
+                                    onChangeText={(text) => this.handleEmailText(text)}
+                                />
+                                <TextInput style={styles.input}
+                                    label="Password"
+                                    value={this.state.text}
+                                    mode="outlined"
+                                    onChangeText={(text) => this.handlePasswordText(text)}
+                                />
 
-                                    {/* <Text>Name:{this.state.email}</Text> */}
-                                    <Button style={styles.loginbtn} mode="contained" 
-                                     onPress={()=>{
-                                        this.props.navigation.replace('Navigation');
+                                <Button style={styles.loginbtn} mode="contained"
+                                    onPress={
+                                        this.getData.bind(this)
+
+                                    }>
+                                    Login
+                                </Button>
+                                <View style={styles.container3}>
+                                    <Text style={{ color: 'grey', fontSize: 12 }}>Don't have an account ?  </Text>
+                                    <TouchableOpacity onPress={() => {
+                                        this.props.navigation.replace('SignUp');
                                     }}>
-                                        Login
-                                    </Button>
-
+                                        <Text style={{ color: 'rgba(127,1,240,1)', fontSize: 12 }}>Sign Up</Text>
+                                    </TouchableOpacity>
                                 </View>
-                            </Card>
-                        </View>
-                    </KeyboardAvoidingView>
+
+                            </View>
+                        </Card>
+                    </View>
+                </KeyboardAvoidingView>
             </View>
 
         );
@@ -73,7 +155,7 @@ const styles = StyleSheet.create({
         height: 430,
         width: 361,
         position: "absolute",
-        top: 122,
+        top: 130,
         borderTopRightRadius: 51,
         borderTopLeftRadius: 51,
         shadowColor: "rgba(0,0,0,1)",
@@ -99,27 +181,34 @@ const styles = StyleSheet.create({
         height: 596,
         marginTop: 60,
         marginLeft: -12,
-        position:"absolute"
+        position: "absolute"
     },
 
     container2: {
         alignContent: 'center',
         width: 290,
         height: 596,
-        marginTop: 130,
+        marginTop: 120,
         marginLeft: 35,
     },
     input: {
         width: 330,
         marginLeft: -20,
-        padding: 10,
-        backgroundColor: "white"
+        padding: 8,
+        backgroundColor: "white",
+
     },
     loginbtn: {
-        marginTop: 35,
+        marginTop: 25,
         width: 120,
         alignSelf: 'center',
-        borderRadius:25
-    }
+        borderRadius: 25,
+    },
+    container3: {
+        padding: 15,
+        flex: 1,
+        flexDirection: 'row',
+        alignSelf: 'center'
+    },
 
 });

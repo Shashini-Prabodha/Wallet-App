@@ -3,30 +3,37 @@ import { ScrollView, StyleSheet, Text, Image, View, TextInput, TouchableOpacity 
 import { Card } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import ListCard from './CardItem';
-import { Value } from 'react-native-reanimated';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 
 export default class Income extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text1: '',
-      text2: '',
+      price: '',
       noteArray: [],
       noteText: '',
+      tempArray:[]
     }
   }
 
-
   componentDidMount() {
+    
     this.animation.play();
     this.animation.play(0, 120);
 
-  }
+  };
+
+  handleNoteText = (text) => {
+    this.setState({ noteText: text });
+  };
+  handlePriceText = (text) => {
+    this.setState({ price: text });
+  };
+
   render() {
     let notes = this.state.noteArray.map((val, key) => {
-      return <ListCard key={key} keyval={key} val={val} description='some text' price='5000' />
+      console.log(key);
+      return <ListCard key={key} keyval={key} val={val} description={this.state.noteText} price={this.state.price} />
     });
 
 
@@ -42,47 +49,54 @@ export default class Income extends Component {
 
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
-          <LottieView style={styles.icon2}
+          { <LottieView style={styles.icon2}
             ref={animation => {
               this.animation = animation;
             }}
             source={require('../assets/mp.json')}
-          ></LottieView>
+          ></LottieView> }
 
-          <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.50000.00</Text>
+          <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.00.00</Text>
 
         </Card>
         <View style={styles.addView} >
-          <TextInput style={styles.textInput} placeholder='Add Income' onChange={(noteText) => this.setState({ noteText })} value={this.state.noteText}></TextInput>
+          <TextInput style={styles.textInput} placeholder='Add Income Type' onChangeText={(text) => this.handleNoteText(text)} value={this.state.text}></TextInput>
 
-          <TextInput style={styles.textInputIncome} placeholder='Price(Rs.)' keyboardType="numeric"></TextInput>
+          <TextInput style={styles.textInputIncome} placeholder='Income(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
 
           <TouchableOpacity style={styles.addBtn}
             onPress={this.addNote.bind(this)}
           >
-            <Text style={styles.addBtntext}>+</Text>
-          </TouchableOpacity>
-        </View>
-        
 
-    <View style={styles.scrollView}>
+            <Text style={styles.addBtntext}>+</Text>
+
+          </TouchableOpacity>
+
+        </View>
+
+
+        <View style={styles.scrollView}>
           {notes}
-   
-    </View>
+
+        </View>
       </ScrollView>
     )
   }
 
   addNote() {
-    if (this.state.noteText) {
+    if (this.state.noteText && this.state.price) {
       var d = new Date();
-      alert(''+this.state.noteArray.length);
+      alert('' + this.state.noteArray.length);
       this.state.noteArray.push({
         'date': d.getFullYear,
       });
       this.setState({ noteArray: this.state.noteArray })
-      this.setState({ noteText: '' })
+      // this.setState({ noteText: '' });
+      // this.setState({ price: '' });
 
+
+    } else {
+      alert("Please Input Income Type/Price")
     }
 
   }
@@ -94,18 +108,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 1,
     backgroundColor: '#fcfcfc',
-    
+
   },
   scrollView: {
-//     flex: 1,
-//     position:'relative',
-    marginTop:70,
-//     height:550,
-//     paddingHorizontal: 1,
-//     backgroundColor: '#fcfcfc',
-//     borderColor:'black',
-// borderWidth:5,
-// flexGrow:1,
+    //     flex: 1,
+    //     position:'relative',
+    marginTop: 70,
+    //     height:550,
+    //     paddingHorizontal: 1,
+    //     backgroundColor: '#fcfcfc',
+    //     borderColor:'black',
+    // borderWidth:5,
+    // flexGrow:1,
 
   },
 
@@ -145,8 +159,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    height:10,
-    margin:0,
+    height: 10,
+    margin: 0,
 
   },
   textInput: {

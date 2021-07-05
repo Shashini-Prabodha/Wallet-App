@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet,Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LottieView from 'lottie-react-native';
 
