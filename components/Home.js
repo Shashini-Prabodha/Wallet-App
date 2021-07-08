@@ -1,54 +1,88 @@
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, Image, View } from 'react-native';
 import { Card } from 'react-native-paper';
-
+import * as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { VictoryBar, VictoryPie } from "victory-native";
 import LottieView from 'lottie-react-native';
 
 
 export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id:''
+    };
+  }
+  handleIDText = (text) => {
+    this.setState({ id: text });
+};
   componentDidMount() {
     this.animation.play();
     this.animation.play(0, 120);
-
+    // let user = AsyncStorage.getItem('name');
+    // console.log('user id '+user.id);
+    this.getData();
+      
   }
+    
+  getData = async () => {
+    try {
+        const id = await AsyncStorage.getItem('id')
+        if (id !== null) {
+            console.log(id+"sign")
+            this.handleIDText(id)
+            // value previously stored
+        }
+    } catch (e) {
+        // error reading value
+    }
+}
+
+
   render() {
     return (
 
       <ScrollView style={styles.container}>
 
 
-        <Text style={{ top: 0, fontSize: 26, alignSelf: 'center', paddingTop: 20, color: '#440A67' }}>MY Wallet</Text>
+        <Text style={{ top: 0, fontSize: 26, alignSelf: 'center', paddingTop: 20, color: '#440A67' }}>MY Wallet {this.props.id} </Text>
+        <Animatable.View animation='pulse' duration={5000}>
+        
         <Card style={styles.mainCard}>
-          <VictoryPie style={styles.chart} animate={{ easing: 'exp' }}
-            colorScale={["#ED4C67", "#fbc531"]}
-            data={[
-              { x: "Expense", y: 60 },
-              { x: "Income", y: 40 }
 
-            ]}
+            <VictoryPie style={styles.chart} animate={{ easing: 'exp' }}
+              colorScale={["#ED4C67", "#fbc531"]}
+              data={[
+                { x: "Expense", y: 60 },
+                { x: "Income", y: 40 }
 
-            innerRadius={83}
-            style={{
-              labels: {
-                fill: '#440A67', fontSize: 15, padding: -20
-              },
-            }}
+              ]}
 
-          >
+              innerRadius={83}
+              style={{
+                labels: {
+                  fill: '#440A67', fontSize: 15, padding: -20
+                },
+              }}
 
-          </VictoryPie>
+            >
 
-        <LottieView style={styles.icon}
-          ref={animation => {
-            animation.play(0, 120);
-          }}
-          source={require('../assets/9072-coin.json')}
-        ></LottieView>
-        <Text style={{ color: 'white', left: 70, top: -380, fontSize: 20 }}>40%</Text>
-        <Text style={{ color: 'white', left: 265, top: -380, fontSize: 20 }}>60%</Text>
+            </VictoryPie>
+
+            <LottieView style={styles.icon}
+              ref={animation => {
+                animation.play(0, 120);
+              }}
+              source={require('../assets/9072-coin.json')}
+            ></LottieView>
+            <Text style={{ color: 'white', left: 70, top: -380, fontSize: 20 }}>40%</Text>
+            <Text style={{ color: 'white', left: 265, top: -380, fontSize: 20 }}>60%</Text>
+
         </Card>
+        </Animatable.View >
+
         <Card style={styles.card}>
           <Text style={{ top: 0, padding: 5, color: '#AF0069', fontSize: 20, }}>Income</Text>
 
@@ -93,12 +127,12 @@ const styles = StyleSheet.create({
 
   },
   mainCard: {
-    position:'relative',
-    width:345,
-    height:370,
-    left:6,
-    paddingBottom:10,
-    marginBottom:20,
+    position: 'relative',
+    width: 345,
+    height: 370,
+    left: 6,
+    paddingBottom: 10,
+    marginBottom: 20,
     shadowColor: "#dcdde1",
     shadowOffset: {
       width: 0,

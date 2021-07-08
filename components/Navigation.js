@@ -1,8 +1,9 @@
 import React from 'react';
-import {  StyleSheet,Image } from 'react-native';
+import {  StyleSheet,Image,Text } from 'react-native';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,6 +23,7 @@ const ProfileStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 const MainTabScreen = () => (
+  
   <Tab.Navigator
     initialRouteName="Home"
     activeColor="#fff"
@@ -37,6 +39,7 @@ const MainTabScreen = () => (
           source={require("../assets/icon/home.png")}
           resizeMode="contain"
           style={styles.icon}></Image>
+          
         ),
       }}
     />
@@ -82,6 +85,7 @@ const MainTabScreen = () => (
         ),
       }}
     />
+
   </Tab.Navigator>
 );
 
@@ -160,9 +164,12 @@ const ProfileStackScreen = ({ navigation }) => (
     }
   }}>
     <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{
+      
       headerLeft: () => (
         //<Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
         <Icon></Icon>
+        
+        
       )
     }} />
   </ProfileStack.Navigator>

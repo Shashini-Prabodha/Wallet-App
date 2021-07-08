@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
+import Home from './Home'
 
 export default class Loader extends Component {
   constructor(props) {
@@ -35,6 +36,7 @@ export default class Loader extends Component {
     try {
 
 
+      const id = await AsyncStorage.getItem('id');
 
       const email = await AsyncStorage.getItem('email');
       const password = await AsyncStorage.getItem('password');
@@ -60,63 +62,63 @@ export default class Loader extends Component {
   handleEmailText = (response) => {
     this.setState({ respArr: response });
 };
-  getDataAPI() {
-    console.log("getDataAPI")
-    fetch('http://192.168.1.100:3000/user')
-      .then((response) => response.json())
-      .then((response) => {
-        let r = response
-        //  console.log(r)
-         this.handleEmailText(response)
+  // getDataAPI() {
+  //   console.log("getDataAPI")
+  //   fetch('http://192.168.1.100:3000/user')
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       let r = response
+  //       //  console.log(r)
+  //        this.handleEmailText(response)
 
-        for (const i in r) {
+  //       for (const i in r) {
 
-          let x = (r[i])
-          // console.log(x)
-        }
-        // const resp= this.resp;
-        // for (const i in resp) {
+  //         let x = (r[i])
+  //         // console.log(x)
+  //       }
+  //       // const resp= this.resp;
+  //       // for (const i in resp) {
 
-        //   let x = (resp[i])
-        //   console.log(x)
-        // }
-        console.log(this.state.respArr[0].name)
-        let notes = this.state.respArr.map((val, key) => {
-          // console.log(val.name);
-        });
+  //       //   let x = (resp[i])
+  //       //   console.log(x)
+  //       // }
+  //       console.log(this.state.respArr[0].name)
+  //       let notes = this.state.respArr.map((val, key) => {
+  //         // console.log(val.name);
+  //       });
 
-      })
-      .catch((error) => console.error(error));
-  }
-saveData(){
+  //     })
+  //     .catch((error) => console.error(error));
+  // }
 
-}
   render() {
     return (
       <View style={styles.container}>
          <Animatable.View  animation='bounceIn' duration={3500}>
-       
-        </Animatable.View>
-        
-         <Animatable.View  animation='bounceIn' duration={3500}>
-
-        <Image
+         <Image
           source={require("../assets/logo.png")}
           resizeMode="contain"
           style={styles.image2}>
         </Image>
         </Animatable.View>
-        <LottieView style={styles.icon}
+        
+         <Animatable.View  animation='fadeIn' duration={3500}>
+         <LottieView style={styles.icon}
           ref={animation => {
             this.animation = animation;
           }}
           source={require('../assets/loader.json')}
         ></LottieView>
+        
+        </Animatable.View>
+        {/* <Animatable.View  animation='fadeIn' duration={4500}> */}
+        
         <Button onPress={
           this.getData.bind(this)
 
         } style={styles.startBtn}><Text style={styles.btnText}>Get Start</Text></Button>
-      
+      {/* </Animatable.View> */}
+
       </View>
     );
   }

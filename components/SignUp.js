@@ -1,18 +1,23 @@
 import { Form, Input, Item, Label, Text } from 'native-base';
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView ,Alert} from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Alert } from 'react-native';
 import { Card, Title, Paragraph, TextInput, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Animatable from 'react-native-animatable';
 
 
 export default class SignUp extends Component {
     state = {
+        id:'',
         name: '',
         email: '',
         password: '',
     };
 
+    handleIDText = (text) => {
+        this.setState({ id: text });
+    };
     handleNameText = (text) => {
         this.setState({ name: text });
     };
@@ -25,12 +30,16 @@ export default class SignUp extends Component {
 
     storeData = async (name, email, password) => {
         try {
+            id:this.state.id;
             name: this.state.name;
             email: this.state.email;
             password: this.state.password;
             if (this.state.name && this.state.email && this.state.password) {
                 // if (this.getData.bind(this)) {
                 if (email !== null && password !== null && name !== null) {
+                    this.saveUser();
+
+                    await AsyncStorage.setItem("id", this.state.id);
                     await AsyncStorage.setItem("name", this.state.name);
                     await AsyncStorage.setItem("email", this.state.email);
                     await AsyncStorage.setItem("password", this.state.password);
@@ -45,7 +54,6 @@ export default class SignUp extends Component {
                 // } else {
                 //     Alert.alert("Incorrect Email or password..! Please check or sign up")
                 // }
-                Alert.alert("Data Saved !")
 
             } else {
                 Alert.alert("Please input Email / Password / Name")
@@ -57,33 +65,28 @@ export default class SignUp extends Component {
     }
 
 
-    saveUser(){
-        fetch('http://192.168.1.100:3000/user')
-        .then((response) => response.json())
-        .then((response) => {
-          let r = response
-          //  console.log(r)
-           this.handleEmailText(response)
-  
-          for (const i in r) {
-  
-            let x = (r[i])
-            // console.log(x)
-          }
-          // const resp= this.resp;
-          // for (const i in resp) {
-  
-          //   let x = (resp[i])
-          //   console.log(x)
-          // }
-          console.log(this.state.respArr[0].name)
-          let notes = this.state.respArr.map((val, key) => {
-            // console.log(val.name);
-          });
-  
-        })
-        .catch((error) => console.error(error));
+    saveUser() {
+
+        fetch('http://192.168.1.100:3000/user', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+            })
+        }).then((response) => response.json())
+            .then((response) => {
+                let text=response
+                  this.handleIDText(text._id)
+                  Alert.alert("Data Saved !")              
+
+            }).catch((error) => console.error(error));
     }
+
 
     getData = async () => {
         try {
@@ -114,14 +117,18 @@ export default class SignUp extends Component {
             <View style={styles.container}>
                 <KeyboardAvoidingView style={styles.container} behavior="position">
                     <View style={styles.container1}>
+                    {/* <Animatable.View animation='fadeInUpBig' duration={1500}> */}
 
                         <Card
                             style={styles.card}>
-                            <Image
-                                source={require("../assets/logo.png")}
-                                resizeMode="contain"
-                                style={styles.image2}>
-                            </Image>
+                            <Animatable.View animation='bounceIn' duration={5500}>
+
+                                <Image
+                                    source={require("../assets/logo.png")}
+                                    resizeMode="contain"
+                                    style={styles.image2}>
+                                </Image>
+                            </Animatable.View>
 
                             <View style={styles.container2}>
                                 <TextInput style={styles.input}
@@ -152,7 +159,8 @@ export default class SignUp extends Component {
                                 </Button>
 
                             </View>
-                        </Card>
+                            </Card>
+                            {/* </Animatable.View> */}
                     </View>
                 </KeyboardAvoidingView>
             </View>

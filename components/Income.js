@@ -3,12 +3,15 @@ import { ScrollView, StyleSheet, Text, Image, View, TextInput, TouchableOpacity 
 import { Card } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import ListCard from './CardItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default class Income extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userID:'',
       price: '',
       noteArray: [],
       noteText: '',
@@ -19,6 +22,7 @@ export default class Income extends Component {
   componentDidMount() {
     this.animation.play();
     this.animation.play(0, 120);
+    this.getData();
        
   }
   handleNoteText = (text) => {
@@ -27,10 +31,27 @@ export default class Income extends Component {
   handlePriceText = (text) => {
     this.setState({ price: text });
   };
+  handleIDText = (text) => {
+    this.setState({ id: text });
+};
+  
+  getData = async () => {
+    try {
+        const id = await AsyncStorage.getItem('id')
+        if (id !== null) {
+            console.log(id+"sign")
+            this.handleIDText(id)
+            // value previously stored
+        }
+    } catch (e) {
+        // error reading value
+    }
+}
 
   render() {
     let notes = this.state.noteArray.map((val, key) => {
       console.log(key);
+      
       return <ListCard key={key} keyval={key} val={val} description={this.state.noteText} price={this.state.price} />
     });
 

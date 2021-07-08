@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
+
 export default class Login extends Component {
     state = {
         email: '',
@@ -94,7 +95,6 @@ export default class Login extends Component {
                                 <Button style={styles.loginbtn} mode="contained"
                                     onPress={
                                         this.getData.bind(this)
-
                                     }>
                                     Login
                                 </Button>
@@ -109,6 +109,9 @@ export default class Login extends Component {
 
                             </View>
                         </Card>
+                        <View>
+
+                        </View>
                     </View>
                 </KeyboardAvoidingView>
             </View>
