@@ -5,6 +5,7 @@ import Expense from './components/Expense';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import Loader from './components/Loader';
+import LoaderHome from './components/LoaderHome';
 import Card from './components/CardItem';
 import SignUp from './components/SignUp';
 import AsycView from './components/AsycView';
@@ -31,6 +32,8 @@ export default class App extends Component {
 
 
                     <Stack.Screen options={{ headerShown: false }} name="Loader" component={Loader} />
+                    <Stack.Screen options={{ headerShown: false }} name="LoaderHome" component={LoaderHome} />
+
                     <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
                     <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignUp} />
 

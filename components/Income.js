@@ -17,12 +17,10 @@ export default class Income extends Component {
   }
 
   componentDidMount() {
-    
     this.animation.play();
     this.animation.play(0, 120);
-
-  };
-
+       
+  }
   handleNoteText = (text) => {
     this.setState({ noteText: text });
   };
@@ -49,12 +47,14 @@ export default class Income extends Component {
 
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
-          { <LottieView style={styles.icon2}
-            ref={animation => {
-              this.animation = animation;
-            }}
-            source={require('../assets/mp.json')}
-          ></LottieView> }
+          { 
+       <LottieView style={styles.icon}
+       ref={animation => {
+         this.animation = animation;
+       }}
+       source={require('../assets/mp.json')}
+     ></LottieView>
+          }
 
           <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.00.00</Text>
 

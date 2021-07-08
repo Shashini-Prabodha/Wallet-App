@@ -1,16 +1,16 @@
 import { Form, Input, Item, Label, Text } from 'native-base';
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, KeyboardAvoidingView, SafeAreaView ,Alert} from 'react-native';
 import { Card, Title, Paragraph, TextInput, Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default class SignUp extends Component {
     state = {
-        name:'',
+        name: '',
         email: '',
-        password:'',
+        password: '',
     };
 
     handleNameText = (text) => {
@@ -20,89 +20,141 @@ export default class SignUp extends Component {
         this.setState({ email: text });
     };
     handlePasswordText = (text) => {
-        this.setState({password: text });
+        this.setState({ password: text });
     };
 
-    storeData = async (value) => {
+    storeData = async (name, email, password) => {
         try {
-          await AsyncStorage.setItem('name', 'SP');
-          console.log("Saved");
-          Alert.alert("Data Saved !")
+            name: this.state.name;
+            email: this.state.email;
+            password: this.state.password;
+            if (this.state.name && this.state.email && this.state.password) {
+                // if (this.getData.bind(this)) {
+                if (email !== null && password !== null && name !== null) {
+                    await AsyncStorage.setItem("name", this.state.name);
+                    await AsyncStorage.setItem("email", this.state.email);
+                    await AsyncStorage.setItem("password", this.state.password);
+
+                    console.log("11" + this.state.email + " " + this.state.password)
+                    console.log("press");
+
+                    this.props.navigation.replace('Navigation');
+                } else {
+                    Alert.alert("Incorrect Email or password..! Please check or sign up")
+                }
+                // } else {
+                //     Alert.alert("Incorrect Email or password..! Please check or sign up")
+                // }
+                Alert.alert("Data Saved !")
+
+            } else {
+                Alert.alert("Please input Email / Password / Name")
+            }
+
         } catch (e) {
-          // saving error
+            // saving error
         }
-      }
-    
-      getData = async () => {
-        try {
-          const value = await AsyncStorage.getItem('name')
-          if (value !== null) {
-            console.log(value)
-            Alert.alert("Value is" + value)
-            // value previously stored
+    }
+
+
+    saveUser(){
+        fetch('http://192.168.1.100:3000/user')
+        .then((response) => response.json())
+        .then((response) => {
+          let r = response
+          //  console.log(r)
+           this.handleEmailText(response)
+  
+          for (const i in r) {
+  
+            let x = (r[i])
+            // console.log(x)
           }
-        } catch (e) {
-          // error reading value
-        }
-      }
-      removeValue = async () => {
+          // const resp= this.resp;
+          // for (const i in resp) {
+  
+          //   let x = (resp[i])
+          //   console.log(x)
+          // }
+          console.log(this.state.respArr[0].name)
+          let notes = this.state.respArr.map((val, key) => {
+            // console.log(val.name);
+          });
+  
+        })
+        .catch((error) => console.error(error));
+    }
+
+    getData = async () => {
         try {
-          await AsyncStorage.removeItem('name')
-          console.log("Removed!")
-          Alert.alert(value + " is removed !")
-    
+            const value = await AsyncStorage.getItem('name')
+            if (value !== null) {
+                console.log(value)
+                Alert.alert("Value is" + value)
+                // value previously stored
+            }
         } catch (e) {
-          // remove error
+            // error reading value
         }
-      }
+    }
+    removeValue = async () => {
+        try {
+            await AsyncStorage.removeItem('name')
+            console.log("Removed!")
+            Alert.alert(value + " is removed !")
+
+        } catch (e) {
+            // remove error
+        }
+    }
 
     render() {
         return (
 
             <View style={styles.container}>
-                    <KeyboardAvoidingView style={styles.container} behavior="position">
-                        <View style={styles.container1}>
+                <KeyboardAvoidingView style={styles.container} behavior="position">
+                    <View style={styles.container1}>
 
-                            <Card
-                                style={styles.card}>
-                                <Image
-                                    source={require("../assets/logo.png")}
-                                    resizeMode="contain"
-                                    style={styles.image2}>
-                                </Image>
+                        <Card
+                            style={styles.card}>
+                            <Image
+                                source={require("../assets/logo.png")}
+                                resizeMode="contain"
+                                style={styles.image2}>
+                            </Image>
 
-                                <View style={styles.container2}>
+                            <View style={styles.container2}>
                                 <TextInput style={styles.input}
-                                        label="Name"
-                                        value={this.state.text}
-                                        mode="outlined"
-                                        onChangeText={(text) => this.handlNameText(text)}
-                                    />
-                                    <TextInput style={styles.input}
-                                        label="Email"
-                                        value={this.state.text}
-                                        mode="outlined"
-                                        onChangeText={(text) => this.handleEmailText(text)}
-                                    />
-                                    <TextInput style={styles.input}
-                                        label="Password"
-                                        value={this.state.text}
-                                        mode="outlined"
-                                        onChangeText={(text) => this.handlePasswordText(text)}
-                                    />
+                                    label="Name"
+                                    value={this.state.text}
+                                    mode="outlined"
+                                    onChangeText={(text) => this.handleNameText(text)}
+                                />
+                                <TextInput style={styles.input}
+                                    label="Email"
+                                    value={this.state.text}
+                                    mode="outlined"
+                                    onChangeText={(text) => this.handleEmailText(text)}
+                                />
+                                <TextInput style={styles.input}
+                                    label="Password"
+                                    value={this.state.text}
+                                    mode="outlined"
+                                    onChangeText={(text) => this.handlePasswordText(text)}
+                                />
 
-                                    {/* <Text>Name:{this.state.email}</Text> */}
-                                    <Button style={styles.loginbtn} mode="contained" 
-                                     onPress={()=>{
-                                        this.props.navigation.replace('Navigation');
-                                    }}>
-                                        Sign Up
-                                    </Button>
+                                {/* <Text>Name:{this.state.email}</Text> */}
+                                <Button style={styles.loginbtn} mode="contained"
+                                    onPress={
+                                        this.storeData.bind(this)
+                                    }>
+                                    Sign Up
+                                </Button>
 
-                                </View>
-                            </Card>
-                        </View>
-                    </KeyboardAvoidingView>
+                            </View>
+                        </Card>
+                    </View>
+                </KeyboardAvoidingView>
             </View>
 
         );
@@ -117,7 +169,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#0fbcf9",
     },
     card: {
-        height:490,
+        height: 490,
         width: 361,
         position: "absolute",
         top: 80,
@@ -146,7 +198,7 @@ const styles = StyleSheet.create({
         height: 596,
         marginTop: 60,
         marginLeft: -12,
-        position:"absolute"
+        position: "absolute"
     },
 
     container2: {
@@ -166,7 +218,7 @@ const styles = StyleSheet.create({
         marginTop: 35,
         width: 120,
         alignSelf: 'center',
-        borderRadius:25
+        borderRadius: 25
     }
 
 });

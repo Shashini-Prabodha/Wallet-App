@@ -23,35 +23,7 @@ export default class Login extends Component {
         this.setState({ password: text });
     };
 
-    storeData = async (email, password) => {
-        try {
-            email: this.state.email;
-            password: this.state.password;
-            if (this.state.email && this.state.password) {
-                // if (this.getData.bind(this)) {
-                if (this.storeData.bind(this)) {
-                    await AsyncStorage.setItem("email", this.state.email);
-                    await AsyncStorage.setItem("password", this.state.password);
-                    console.log("11" + this.state.email + " " + this.state.password)
-                    console.log("press");
-                    // this.props.navigation.replace('Navigation');
-                } else {
-                    Alert.alert("Incorrect Email or password..! Please check or sign up")
-                }
-                // } else {
-                //     Alert.alert("Incorrect Email or password..! Please check or sign up")
-                // }
-                Alert.alert("Data Saved !")
-
-            } else {
-                Alert.alert("Enter Email/Password")
-            }
-
-        } catch (e) {
-            // saving error
-        }
-    }
-
+   
     getData = async () => {
         try {
             console.log("####")
@@ -70,7 +42,8 @@ export default class Login extends Component {
                 }
                 // value previously stored
             } else {
-                console.log("Value is null");
+                Alert.alert("Incorrect Email or password..! Please check or sign up")
+
 
             }
         } catch (e) {
