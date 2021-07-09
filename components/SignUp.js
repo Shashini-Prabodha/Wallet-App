@@ -67,7 +67,7 @@ export default class SignUp extends Component {
 
     saveUser() {
 
-        fetch('http://192.168.1.100:3000/user', {
+        fetch('http://192.168.1.101:3000/user', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -83,7 +83,7 @@ export default class SignUp extends Component {
                 let text=response
                   this.handleIDText(text._id)
                    AsyncStorage.setItem("id", this.state.id);
-
+// this.storeData();
                   Alert.alert("Data Saved !"+text._id)              
 
             }).catch((error) => console.error(error));

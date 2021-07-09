@@ -61,34 +61,7 @@ export default class Loader extends Component {
   handleEmailText = (response) => {
     this.setState({ respArr: response });
   };
-  // getDataAPI() {
-  //   console.log("getDataAPI")
-  //   fetch('http://192.168.1.100:3000/user')
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       let r = response
-  //       //  console.log(r)
-  //        this.handleEmailText(response)
-
-  //       for (const i in r) {
-
-  //         let x = (r[i])
-  //         // console.log(x)
-  //       }
-  //       // const resp= this.resp;
-  //       // for (const i in resp) {
-
-  //       //   let x = (resp[i])
-  //       //   console.log(x)
-  //       // }
-  //       console.log(this.state.respArr[0].name)
-  //       let notes = this.state.respArr.map((val, key) => {
-  //         // console.log(val.name);
-  //       });
-
-  //     })
-  //     .catch((error) => console.error(error));
-  // }
+ 
 
   render() {
     return (
@@ -163,3 +136,4 @@ const styles = StyleSheet.create({
   }
 
 });
+

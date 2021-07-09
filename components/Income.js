@@ -11,10 +11,11 @@ export default class Income extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID: '',
+      id: '',
       price: '',
+      date: '',
       noteArray: [],
-      noteText: '',
+      category: '',
       tempArray: []
     }
   }
@@ -24,8 +25,8 @@ export default class Income extends Component {
     this.getData();
 
   }
-  handleNoteText = (text) => {
-    this.setState({ noteText: text });
+  handlecategory = (text) => {
+    this.setState({ category: text });
   };
   handlePriceText = (text) => {
     this.setState({ price: text });
@@ -33,7 +34,9 @@ export default class Income extends Component {
   handleIDText = (text) => {
     this.setState({ id: text });
   };
-
+  handleDateText = (text) => {
+    this.setState({ date: text });
+  };
   getData = async () => {
     try {
       const id = await AsyncStorage.getItem('id')
@@ -47,11 +50,86 @@ export default class Income extends Component {
     }
   }
 
+  ShowCurrentDate = () => {
+
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
+
+    const today = date + '-' + month + '-' + year;
+    console.log("today " + today);
+    this.handleDateText(today)
+  }
+
+  // storeData = async () => {
+  //   try {
+  //     id: this.state.id;
+  //     category: this.state.category;
+  //     price: this.state.price;
+  //     date: this.state.date;
+  //     if (this.state.category && this.state.price) {
+
+  //       if (id !== null && category !== null && price !== null) {
+  //         this.saveUser();
+
+  //         await AsyncStorage.setItem("id", this.state.id);
+  //         await AsyncStorage.setItem("category", this.state.category);
+  //         await AsyncStorage.setItem("price", this.state.price);
+  //         await AsyncStorage.setItem("date", this.state.date);
+
+  //         console.log("Sig up=> " + this.state.id + " " + this.state.email + " " + this.state.password)
+  //         console.log("press");
+
+  //         this.props.navigation.replace('Navigation');
+  //       } else {
+  //         Alert.alert("Incorrect Email or password..! Please check or sign up")
+  //       }
+  //       // } else {
+  //       //     Alert.alert("Incorrect Email or password..! Please check or sign up")
+  //       // }
+
+  //     } else {
+  //       Alert.alert("Please input Email / Password / Name")
+  //     }
+
+  //   } catch (e) {
+  //     // saving error
+  //   }
+  // }
+
+
+  saveIncome() {
+    this.ShowCurrentDate();
+    console.log(this.state.id+" "+this.state.category+" "+this.state.date+" "+this.state.price)
+
+    fetch('http://192.168.1.101:3000/income', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        category: this.state.category,
+        price: this.state.price,
+        date: this.state.date,
+        userID: this.state.id,
+
+      })
+
+    }).then((response) => response.json())
+      .then((response) => {
+        let text = response
+        // this.handleIDText(text._id)
+        console.log(text._id);
+this.addNote();
+      }).catch((error) => console.log(error));
+  }
+
   render() {
     let notes = this.state.noteArray.map((val, key) => {
       console.log(key);
 
-      return <ListCard key={key} keyval={key} val={val} description={this.state.noteText} price={this.state.price} />
+      return <ListCard key={key} keyval={key} val={val} description={this.state.category} price={this.state.price} />
     });
 
 
@@ -68,7 +146,7 @@ export default class Income extends Component {
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
           {
-            <LottieView style={styles.icon}
+            <LottieView style={styles.icon3}
               source={require('../assets/mp.json')}
               colorFilters={[{
                 keypath: "button",
@@ -82,16 +160,16 @@ export default class Income extends Component {
             />
           }
 
-          <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.00.00</Text>
+          <Text style={{ color: '#AF0069', fontSize: 35, top: -100, left: 10 }}>Rs.00.00</Text>
 
         </Card>
         <View style={styles.addView} >
-          <TextInput style={styles.textInput} placeholder='Add Income Type' onChangeText={(text) => this.handleNoteText(text)} value={this.state.text}></TextInput>
+          <TextInput style={styles.textInput} placeholder='Add Income Type' onChangeText={(text) => this.handlecategory(text)} value={this.state.text}></TextInput>
 
           <TextInput style={styles.textInputIncome} placeholder='Income(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
 
           <TouchableOpacity style={styles.addBtn}
-            onPress={this.addNote.bind(this)}
+            onPress={this.saveIncome.bind(this)}
           >
 
             <Text style={styles.addBtntext}>+</Text>
@@ -110,14 +188,14 @@ export default class Income extends Component {
   }
 
   addNote() {
-    if (this.state.noteText && this.state.price) {
-      var d = new Date();
+    if (this.state.category && this.state.price) {
+      var date = new Date();
       alert('' + this.state.noteArray.length);
       this.state.noteArray.push({
-        'date': d.getFullYear,
+        //'date': d.getFullYear,
       });
       this.setState({ noteArray: this.state.noteArray })
-      // this.setState({ noteText: '' });
+      // this.setState({ category: '' });
       // this.setState({ price: '' });
 
 
@@ -155,7 +233,11 @@ const styles = StyleSheet.create({
     top: -10,
 
   },
+  icon3: {
+    width: 130,
+    left: 100,
 
+  },
   card: {
     borderRadius: 25,
     position: 'relative',
