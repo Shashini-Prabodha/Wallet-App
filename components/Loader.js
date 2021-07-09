@@ -5,7 +5,6 @@ import * as Animatable from 'react-native-animatable';
 
 import LottieView from 'lottie-react-native';
 import { Button } from 'react-native-paper';
-import Home from './Home'
 
 export default class Loader extends Component {
   constructor(props) {
@@ -13,17 +12,17 @@ export default class Loader extends Component {
     this.state = {
 
       respArr: [],
-      
+
     };
-    
+
   }
 
 
   componentDidMount() {
 
-    this.animation.play();
+    // this.animation.play();
     // Or set a specific startFrame and endFrame with:
-    this.animation.play(0, 120);
+    // this.animation.play(0, 120);
     setTimeout(() => {
       console.log("log");
 
@@ -40,7 +39,7 @@ export default class Loader extends Component {
 
       const email = await AsyncStorage.getItem('email');
       const password = await AsyncStorage.getItem('password');
-      console.log("####" + email + " " + password)
+      console.log("####" + id + " -id " + email + " " + password)
 
       if (email !== null && password !== null) {
 
@@ -58,10 +57,10 @@ export default class Loader extends Component {
       // error reading value
     }
   }
-  
+
   handleEmailText = (response) => {
     this.setState({ respArr: response });
-};
+  };
   // getDataAPI() {
   //   console.log("getDataAPI")
   //   fetch('http://192.168.1.100:3000/user')
@@ -94,30 +93,38 @@ export default class Loader extends Component {
   render() {
     return (
       <View style={styles.container}>
-         <Animatable.View  animation='bounceIn' duration={3500}>
-         <Image
-          source={require("../assets/logo.png")}
-          resizeMode="contain"
-          style={styles.image2}>
-        </Image>
+        <Animatable.View animation='bounceIn' duration={3500}>
+          <Image
+            source={require("../assets/logo.png")}
+            resizeMode="contain"
+            style={styles.image2}>
+          </Image>
         </Animatable.View>
-        
-         <Animatable.View  animation='fadeIn' duration={3500}>
-         <LottieView style={styles.icon}
-          ref={animation => {
-            this.animation = animation;
-          }}
-          source={require('../assets/loader.json')}
-        ></LottieView>
-        
+
+        <Animatable.View animation='fadeIn' duration={3500}>
+
+
+          <LottieView style={styles.icon}
+            source={require('../assets/loader.json')}
+            colorFilters={[{
+              keypath: "button",
+              color: "#F00000"
+            }, {
+              keypath: "Sending Loader",
+              color: "#F00000"
+            }]}
+            autoPlay
+            loop
+          />
+
         </Animatable.View>
         {/* <Animatable.View  animation='fadeIn' duration={4500}> */}
-        
+
         <Button onPress={
           this.getData.bind(this)
 
         } style={styles.startBtn}><Text style={styles.btnText}>Get Start</Text></Button>
-      {/* </Animatable.View> */}
+        {/* </Animatable.View> */}
 
       </View>
     );

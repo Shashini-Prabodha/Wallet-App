@@ -44,7 +44,7 @@ export default class SignUp extends Component {
                     await AsyncStorage.setItem("email", this.state.email);
                     await AsyncStorage.setItem("password", this.state.password);
 
-                    console.log("11" + this.state.email + " " + this.state.password)
+                    console.log("Sig up=> " +this.state.id+" "+ this.state.email + " " + this.state.password)
                     console.log("press");
 
                     this.props.navigation.replace('Navigation');
@@ -82,7 +82,9 @@ export default class SignUp extends Component {
             .then((response) => {
                 let text=response
                   this.handleIDText(text._id)
-                  Alert.alert("Data Saved !")              
+                   AsyncStorage.setItem("id", this.state.id);
+
+                  Alert.alert("Data Saved !"+text._id)              
 
             }).catch((error) => console.error(error));
     }

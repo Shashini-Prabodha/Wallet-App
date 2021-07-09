@@ -12,33 +12,31 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id:''
+      id: ''
     };
+
   }
   handleIDText = (text) => {
     this.setState({ id: text });
-};
+  };
   componentDidMount() {
-    this.animation.play();
-    this.animation.play(0, 120);
-    // let user = AsyncStorage.getItem('name');
-    // console.log('user id '+user.id);
     this.getData();
-      
+
+
   }
-    
+
   getData = async () => {
     try {
-        const id = await AsyncStorage.getItem('id')
-        if (id !== null) {
-            console.log(id+"sign")
-            this.handleIDText(id)
-            // value previously stored
-        }
+      const id = await AsyncStorage.getItem('id')
+      if (id !== null) {
+        console.log(id + "sign")
+        this.handleIDText(id)
+        // value previously stored
+      }
     } catch (e) {
-        // error reading value
+      // error reading value
     }
-}
+  }
 
 
   render() {
@@ -49,8 +47,8 @@ export default class Home extends Component {
 
         <Text style={{ top: 0, fontSize: 26, alignSelf: 'center', paddingTop: 20, color: '#440A67' }}>MY Wallet {this.props.id} </Text>
         <Animatable.View animation='pulse' duration={5000}>
-        
-        <Card style={styles.mainCard}>
+
+          <Card style={styles.mainCard}>
 
             <VictoryPie style={styles.chart} animate={{ easing: 'exp' }}
               colorScale={["#ED4C67", "#fbc531"]}
@@ -70,17 +68,24 @@ export default class Home extends Component {
             >
 
             </VictoryPie>
-
             <LottieView style={styles.icon}
-              ref={animation => {
-                animation.play(0, 120);
-              }}
               source={require('../assets/9072-coin.json')}
-            ></LottieView>
+
+              colorFilters={[{
+                keypath: "button",
+                color: "#F00000"
+              }, {
+                keypath: "Sending Loader",
+                color: "#F00000"
+              }]}
+              autoPlay
+              loop
+            />
+
             <Text style={{ color: 'white', left: 70, top: -380, fontSize: 20 }}>40%</Text>
             <Text style={{ color: 'white', left: 265, top: -380, fontSize: 20 }}>60%</Text>
 
-        </Card>
+          </Card>
         </Animatable.View >
 
         <Card style={styles.card}>
@@ -89,12 +94,21 @@ export default class Home extends Component {
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
           <LottieView style={styles.icon2}
-            ref={animation => {
-              animation.play(0, 120);
-            }}
             source={require('../assets/mp.json')}
-          ></LottieView>
-          <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.50000.00</Text>
+
+
+            colorFilters={[{
+              keypath: "button",
+              color: "#F00000"
+            }, {
+              keypath: "Sending Loader",
+              color: "#F00000"
+            }]}
+            autoPlay
+            loop
+          />
+
+          <Text style={{ color: '#AF0069', fontSize: 30, top: -110, left: 10 }}>Rs.50000.00</Text>
 
 
         </Card>
@@ -102,14 +116,20 @@ export default class Home extends Component {
           <Text style={{ top: 0, padding: 5, color: '#185ADB', fontSize: 20, }}>Expenses</Text>
 
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
-
           <LottieView style={styles.icon3}
-            ref={animation => {
-              this.animation = animation;
-            }}
             source={require('../assets/mexp.json')}
-          ></LottieView>
-          <Text style={{ color: '#185ADB', fontSize: 35, top: -60, left: 10 }}>Rs.18200.00</Text>
+            colorFilters={[{
+              keypath: "button",
+              color: "#F00000"
+            }, {
+              keypath: "Sending Loader",
+              color: "#F00000"
+            }]}
+            autoPlay
+            loop
+          />
+
+          <Text style={{ color: '#185ADB', fontSize: 30, top: -60, left: 10 }}>Rs.18200.00</Text>
 
 
         </Card>

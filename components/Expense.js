@@ -8,8 +8,6 @@ import LottieView from 'lottie-react-native';
 
 export default class Income extends Component {
   componentDidMount() {
-    this.animation.play();
-    this.animation.play(0, 120);
 
   }
   render() {
@@ -26,11 +24,17 @@ export default class Income extends Component {
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
           <LottieView style={styles.icon3}
-            ref={animation => {
-              this.animation = animation;
-            }}
-            source={require('../assets/mexp.json')}
-          ></LottieView>
+              source={require('../assets/mexp.json')}
+              colorFilters={[{
+                keypath: "button",
+                color: "#F00000"
+              }, {
+                keypath: "Sending Loader",
+                color: "#F00000"
+              }]}
+              autoPlay
+              loop
+            />
           <Text style={{ color: '#185ADB', fontSize: 35, top: -60, left: 10 }}>Rs.18200.00</Text>
 
 

@@ -11,19 +11,18 @@ export default class Income extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID:'',
+      userID: '',
       price: '',
       noteArray: [],
       noteText: '',
-      tempArray:[]
+      tempArray: []
     }
   }
 
   componentDidMount() {
-    this.animation.play();
-    this.animation.play(0, 120);
+
     this.getData();
-       
+
   }
   handleNoteText = (text) => {
     this.setState({ noteText: text });
@@ -33,25 +32,25 @@ export default class Income extends Component {
   };
   handleIDText = (text) => {
     this.setState({ id: text });
-};
-  
+  };
+
   getData = async () => {
     try {
-        const id = await AsyncStorage.getItem('id')
-        if (id !== null) {
-            console.log(id+"sign")
-            this.handleIDText(id)
-            // value previously stored
-        }
+      const id = await AsyncStorage.getItem('id')
+      if (id !== null) {
+        console.log(id + "sign")
+        this.handleIDText(id)
+        // value previously stored
+      }
     } catch (e) {
-        // error reading value
+      // error reading value
     }
-}
+  }
 
   render() {
     let notes = this.state.noteArray.map((val, key) => {
       console.log(key);
-      
+
       return <ListCard key={key} keyval={key} val={val} description={this.state.noteText} price={this.state.price} />
     });
 
@@ -68,13 +67,19 @@ export default class Income extends Component {
 
           <View style={{ borderBottomColor: '#dcdde1', borderBottomWidth: 1, }} />
 
-          { 
-       <LottieView style={styles.icon}
-       ref={animation => {
-         this.animation = animation;
-       }}
-       source={require('../assets/mp.json')}
-     ></LottieView>
+          {
+            <LottieView style={styles.icon}
+              source={require('../assets/mp.json')}
+              colorFilters={[{
+                keypath: "button",
+                color: "#F00000"
+              }, {
+                keypath: "Sending Loader",
+                color: "#F00000"
+              }]}
+              autoPlay
+              loop
+            />
           }
 
           <Text style={{ color: '#AF0069', fontSize: 35, top: -110, left: 10 }}>Rs.00.00</Text>

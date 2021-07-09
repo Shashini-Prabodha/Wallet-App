@@ -10,8 +10,6 @@ import Card from './components/CardItem';
 import SignUp from './components/SignUp';
 import AsycView from './components/AsycView';
 
-
-
 import Navigation from './components/Navigation';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -44,6 +42,7 @@ export default class App extends Component {
                     <Stack.Screen name="Card" component={Card} />
 
                     <Stack.Screen options={{ headerShown: false }} name="Navigation" component={Navigation} />
+
 
                 </Stack.Navigator>
             }</NavigationContainer>

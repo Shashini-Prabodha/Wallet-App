@@ -1,10 +1,10 @@
 import React from 'react';
 import {  StyleSheet,Image,Text } from 'react-native';
-
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import LottieView from 'lottie-react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -104,11 +104,18 @@ const HomeStackScreen = ({ navigation }) => (
     <HomeStack.Screen name="My Wallet" component={HomeScreen} options={{
       title: 'Home',
       headerLeft: () => (
-        <Image
-        source={require("../assets/logoround.png")}
-        resizeMode="contain"
-        style={styles.image2}>
-    </Image>
+        <LottieView style={styles.icon1}
+            source={require('../assets/newwallet.json')}
+            colorFilters={[{
+              keypath: "button",
+              color: "#F00000"
+            }, {
+              keypath: "Sending Loader",
+              color: "#F00000"
+            }]}
+            autoPlay
+            loop
+          />
       
       )
     }} />
@@ -180,6 +187,11 @@ const styles = StyleSheet.create({
   width:26,
   height:30
 
-  }
+  },
+  icon1: {
+    width:50,
+    height:35,
+left:8
+    }
 
 });
