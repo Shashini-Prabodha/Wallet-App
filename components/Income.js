@@ -10,13 +10,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class Income extends Component {
   constructor(props) {
     super(props);
+    this.txtExpenses = React.createRef();
+    this.txtPrice = React.createRef();
     this.state = {
       id: '',
       price: '',
       date: '',
       noteArray: [],
       category: '',
-      tempArray: []
+      tempArray: [],
+      income:''
     }
   }
 
@@ -37,12 +40,18 @@ export default class Income extends Component {
   handleDateText = (text) => {
     this.setState({ date: text });
   };
+  handleIncomeText = (text) => {
+    this.setState({ income: text });
+  };
+
+
   getData = async () => {
     try {
       const id = await AsyncStorage.getItem('id')
       if (id !== null) {
         console.log(id + "sign")
         this.handleIDText(id)
+        this.getIncomePrice();
         // value previously stored
       }
     } catch (e) {
@@ -61,48 +70,33 @@ export default class Income extends Component {
     this.handleDateText(today)
   }
 
-  // storeData = async () => {
-  //   try {
-  //     id: this.state.id;
-  //     category: this.state.category;
-  //     price: this.state.price;
-  //     date: this.state.date;
-  //     if (this.state.category && this.state.price) {
+  getIncomePrice() {
+    console.log("getData Income price" + this.state.id)
 
-  //       if (id !== null && category !== null && price !== null) {
-  //         this.saveUser();
+    // fetch('http://192.168.1.100:3000/income/get/income/'+this.state.id)
+    fetch('http://192.168.1.100:3000/income/get/income/' + this.state.id, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        let r = response
+        console.log(r)
+        this.handleIncomeText(response)
 
-  //         await AsyncStorage.setItem("id", this.state.id);
-  //         await AsyncStorage.setItem("category", this.state.category);
-  //         await AsyncStorage.setItem("price", this.state.price);
-  //         await AsyncStorage.setItem("date", this.state.date);
-
-  //         console.log("Sig up=> " + this.state.id + " " + this.state.email + " " + this.state.password)
-  //         console.log("press");
-
-  //         this.props.navigation.replace('Navigation');
-  //       } else {
-  //         Alert.alert("Incorrect Email or password..! Please check or sign up")
-  //       }
-  //       // } else {
-  //       //     Alert.alert("Incorrect Email or password..! Please check or sign up")
-  //       // }
-
-  //     } else {
-  //       Alert.alert("Please input Email / Password / Name")
-  //     }
-
-  //   } catch (e) {
-  //     // saving error
-  //   }
-  // }
+      })
+      .catch((error) => console.error(error));
+  }
 
 
   saveIncome() {
     this.ShowCurrentDate();
-    console.log(this.state.id+" "+this.state.category+" "+this.state.date+" "+this.state.price)
+    console.log(this.state.id + " " + this.state.category + " " + this.state.date + " " + this.state.price)
 
-    fetch('http://192.168.1.101:3000/income', {
+    fetch('http://192.168.1.100:3000/income', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -121,7 +115,7 @@ export default class Income extends Component {
         let text = response
         // this.handleIDText(text._id)
         console.log(text._id);
-this.addNote();
+        this.addNote();
       }).catch((error) => console.log(error));
   }
 
@@ -160,13 +154,13 @@ this.addNote();
             />
           }
 
-          <Text style={{ color: '#AF0069', fontSize: 35, top: -100, left: 10 }}>Rs.00.00</Text>
+          <Text style={{ color: '#AF0069', fontSize: 35, top: -100, left: 10 }}>Rs.{this.state.income}</Text>
 
         </Card>
         <View style={styles.addView} >
-          <TextInput style={styles.textInput} placeholder='Add Income Type' onChangeText={(text) => this.handlecategory(text)} value={this.state.text}></TextInput>
+          <TextInput style={styles.textInput} ref={this.txtExpenses} placeholder='Add Income Type' onChangeText={(text) => this.handlecategory(text)} value={this.state.text}></TextInput>
 
-          <TextInput style={styles.textInputIncome} placeholder='Income(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
+          <TextInput style={styles.textInputIncome} ref={this.txtPrice} placeholder='Income(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
 
           <TouchableOpacity style={styles.addBtn}
             onPress={this.saveIncome.bind(this)}
@@ -190,13 +184,14 @@ this.addNote();
   addNote() {
     if (this.state.category && this.state.price) {
       var date = new Date();
-      alert('' + this.state.noteArray.length);
+      alert('Added Successfully...!')
+      this.getIncomePrice();
       this.state.noteArray.push({
         //'date': d.getFullYear,
       });
       this.setState({ noteArray: this.state.noteArray })
-      // this.setState({ category: '' });
-      // this.setState({ price: '' });
+      this.txtExpenses.current.clear();
+      this.txtPrice.current.clear();
 
 
     } else {

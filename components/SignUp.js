@@ -47,7 +47,7 @@ export default class SignUp extends Component {
                     console.log("Sig up=> " +this.state.id+" "+ this.state.email + " " + this.state.password)
                     console.log("press");
 
-                    this.props.navigation.replace('Navigation');
+                    this.props.navigation.replace('Login');
                 } else {
                     Alert.alert("Incorrect Email or password..! Please check or sign up")
                 }
@@ -67,7 +67,7 @@ export default class SignUp extends Component {
 
     saveUser() {
 
-        fetch('http://192.168.1.101:3000/user', {
+        fetch('http://192.168.1.100:3000/user', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -84,9 +84,9 @@ export default class SignUp extends Component {
                   this.handleIDText(text._id)
                    AsyncStorage.setItem("id", this.state.id);
 // this.storeData();
-                  Alert.alert("Data Saved !"+text._id)              
+                  Alert.alert("Create Account Successfully! !")              
 
-            }).catch((error) => console.error(error));
+            }).catch((error) => console.log(error.message));
     }
 
 
@@ -95,7 +95,7 @@ export default class SignUp extends Component {
             const value = await AsyncStorage.getItem('name')
             if (value !== null) {
                 console.log(value)
-                Alert.alert("Value is" + value)
+                // Alert.alert("Value is" + value)
                 // value previously stored
             }
         } catch (e) {
@@ -146,6 +146,7 @@ export default class SignUp extends Component {
                                     onChangeText={(text) => this.handleEmailText(text)}
                                 />
                                 <TextInput style={styles.input}
+                                secureTextEntry={true} 
                                     label="Password"
                                     value={this.state.text}
                                     mode="outlined"

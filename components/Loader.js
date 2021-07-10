@@ -19,16 +19,11 @@ export default class Loader extends Component {
 
 
   componentDidMount() {
-
+this.getData.bind(this);
     // this.animation.play();
     // Or set a specific startFrame and endFrame with:
     // this.animation.play(0, 120);
-    setTimeout(() => {
-      console.log("log");
-
-      //  this.props.navigation.replace('Login');
-
-    }, 2000);
+   
   }
 
   getData = async () => {
@@ -42,13 +37,20 @@ export default class Loader extends Component {
       console.log("####" + id + " -id " + email + " " + password)
 
       if (email !== null && password !== null) {
+      
+          console.log("log");
+    
+          this.props.navigation.replace('Navigation');
 
-        this.props.navigation.replace('Navigation');
+
         this.getDataAPI();
         // this.getMoviesFromApi();
 
       } else {
-        this.props.navigation.replace('Login');
+
+          console.log("log");
+    
+           this.props.navigation.replace('Login');
 
       }
       // value previously stored

@@ -10,13 +10,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class Expense extends Component {
   constructor(props) {
     super(props);
+    this.txtExpenses = React.createRef();
+    this.txtPrice = React.createRef();
+
     this.state = {
       id: '',
       price: '',
       date: '',
       noteArray: [],
       category: '',
-      tempArray: []
+      tempArray: [],
+      expenses:''
     }
   }
 
@@ -37,12 +41,17 @@ export default class Expense extends Component {
   handleDateText = (text) => {
     this.setState({ date: text });
   };
+  handleExpenseText = (text) => {
+    this.setState({ expenses: text });
+  };
+
   getData = async () => {
     try {
       const id = await AsyncStorage.getItem('id')
       if (id !== null) {
         console.log(id + "sign")
         this.handleIDText(id)
+        this.getExpensePrice();
         // value previously stored
       }
     } catch (e) {
@@ -61,48 +70,13 @@ export default class Expense extends Component {
     this.handleDateText(today)
   }
 
-  // storeData = async () => {
-  //   try {
-  //     id: this.state.id;
-  //     category: this.state.category;
-  //     price: this.state.price;
-  //     date: this.state.date;
-  //     if (this.state.category && this.state.price) {
-
-  //       if (id !== null && category !== null && price !== null) {
-  //         this.saveUser();
-
-  //         await AsyncStorage.setItem("id", this.state.id);
-  //         await AsyncStorage.setItem("category", this.state.category);
-  //         await AsyncStorage.setItem("price", this.state.price);
-  //         await AsyncStorage.setItem("date", this.state.date);
-
-  //         console.log("Sig up=> " + this.state.id + " " + this.state.email + " " + this.state.password)
-  //         console.log("press");
-
-  //         this.props.navigation.replace('Navigation');
-  //       } else {
-  //         Alert.alert("Incorrect Email or password..! Please check or sign up")
-  //       }
-  //       // } else {
-  //       //     Alert.alert("Incorrect Email or password..! Please check or sign up")
-  //       // }
-
-  //     } else {
-  //       Alert.alert("Please input Email / Password / Name")
-  //     }
-
-  //   } catch (e) {
-  //     // saving error
-  //   }
-  // }
 
 
   saveExpense() {
     this.ShowCurrentDate();
     console.log(this.state.id + " " + this.state.category + " " + this.state.date + " " + this.state.price)
 
-    fetch('http://192.168.1.101:3000/expense', {
+    fetch('http://192.168.1.100:3000/expense', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -121,8 +95,30 @@ export default class Expense extends Component {
         let text = response
         // this.handleIDText(text._id)
         console.log(text._id);
+        this.getExpensePrice();
         this.addNote();
+
       }).catch((error) => console.log(error));
+  }
+
+  getExpensePrice() {
+    console.log("getData Ex price" + this.state.id)
+
+    fetch('http://192.168.1.100:3000/expense/get/expense/' + this.state.id, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        let r = response
+        this.handleExpenseText(response);
+       
+      })
+      .catch((error) => console.error(error));
+
   }
 
   render() {
@@ -157,14 +153,14 @@ export default class Expense extends Component {
             autoPlay
             loop
           />
-          <Text style={{ color: '#185ADB', fontSize: 35, top: -60, left: 10 }}>Rs.18200.00</Text>
+          <Text style={{ color: '#185ADB', fontSize: 35, top: -60, left: 10 }}>Rs.{this.state.expenses}</Text>
 
 
         </Card>
         <View style={styles.addView} >
-          <TextInput style={styles.textInput} placeholder='Add Expense Type' onChangeText={(text) => this.handlecategory(text)} value={this.state.text}></TextInput>
+          <TextInput style={styles.textInput}  ref={this.txtExpenses} placeholder='Add Expense Type' onChangeText={(text) => this.handlecategory(text)} value={this.state.text}></TextInput>
 
-          <TextInput style={styles.textInputExpense} placeholder='Expense(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
+          <TextInput style={styles.textInputExpense}  ref={this.txtPrice} placeholder='Expense(Rs.)' onChangeText={(text) => this.handlePriceText(text)} value={this.state.text} keyboardType="numeric"></TextInput>
 
           <TouchableOpacity style={styles.addBtn}
             onPress={this.saveExpense.bind(this)}
@@ -188,13 +184,15 @@ export default class Expense extends Component {
   addNote() {
     if (this.state.category && this.state.price) {
       var date = new Date();
-      alert('' + this.state.noteArray.length);
+      alert('Added Successfully...!')
       this.state.noteArray.push({
         //'date': d.getFullYear,
       });
       this.setState({ noteArray: this.state.noteArray })
       // this.setState({ category: '' });
       // this.setState({ price: '' });
+      this.txtExpenses.current.clear();
+      this.txtPrice.current.clear();
 
 
     } else {

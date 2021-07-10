@@ -49,13 +49,25 @@ export default class Profile extends Component {
     this.handleNameText(name)
     this.handleEmailText(email)
   }
-
+  clearAll = async () => {
+    try {
+      await AsyncStorage.clear()
+      this.props.navigation.navigate('Login');
+    } catch(e) {
+      // clear error
+    }
+  
+    console.log('Done.')
+  }
+  
 
   render() {
     return (
       <View>
         <TouchableOpacity style={styles.icon3}
-         
+         onPress={
+          this.clearAll.bind(this)
+        }
         >
           <LottieView
             source={require('../assets/exit.json')}
@@ -68,10 +80,7 @@ export default class Profile extends Component {
             }]}
             autoPlay
             loop
-            onPress={
-              // this.getUserData.bind(this)
-              Alert.alert('Logout')
-            }
+            
             /></TouchableOpacity>
 
         <LottieView style={styles.icon}
@@ -100,17 +109,19 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   icon: {
     width: 260,
+    top:-10,
     alignSelf: 'center'
   },
   userName: {
     alignSelf: 'center',
     fontSize: 38,
-    color: "#16a085"
+    color: "#16a085",
+    marginTop:-30,
   },
   email: {
     alignSelf: 'center',
-    marginTop: 40,
-    fontSize: 25,
+    marginTop: 20,
+    fontSize: 20,
 
   },
   icon3: {
